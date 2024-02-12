@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+    h1 {
+        color: red;
+    }
+    .btn{
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: white;
+        outline: none;
+        border: 0px;
+        border-radius: 3px;
+        padding: 2px 6px;
+        cursor: pointer;
+    }
+
+    #yesBtn {
+        background-color: #5566FC;
+    }
+
+    #noBtn {
+        background: #f00;
+    }
+
+    #nameDiv {
+        background-color: white;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        position: absolute;
+        min-width: 350px;
+        min-height: 250px;
+    }
+
+    #name {
+        font-size: 1.5rem;
+        margin: 4px;
+    }
+    #nameDiv button{
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: white;
+        outline: none;
+        border: 0px;
+        border-radius: 3px;
+        padding: 2px 6px;
+        cursor: pointer;
+        background-color: #5566FC;
+        transition: 400ms;
+    }
+
+    #loveDiv {
+        background-color: white;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        position: absolute;
+        min-width: 350px;
+        min-height: 250px;
+        display: none;
+    }
+    img {
+        width: 100px;
+        height: 100px;
+    }
+</style>
+<body>
+    <h1>Will you be my valentine?</h1>
+    <div id="btnDiv">
+        <button class="btn" id="yesBtn">Yes &#x1F618;</button>
+        <button class="btn" id="noBtn">No &#x1F614;</button>
+    </div>
+    <div id="nameDiv">
+        <h2>What is your Name?</h2>
+        <input type="name" id="name">
+        <button onclick="nameInput()">Enter</button>
+    </div>
+    <div id="loveDiv">
+        <img src="/kiss.gif" alt="&#x1F618;">
+        <h2 id="loveName"></h2>
+    </div>
+</body>
+
+<script>
+    let body = document.getElementsByTagName("body")[0]
+    let nameDiv = document.getElementById("nameDiv")
+    let nameBox = document.getElementById("name")
+    let btnDiv = document.getElementById("btnDiv");
+    let noBtn = document.getElementById("noBtn");
+    let yesBtn = document.getElementById("yesBtn");
+    let loveDiv = document.getElementById("loveDiv");
+    let loveName = document.getElementById("loveName");
+    const width = window.screen.width - 100
+    const height = window.screen.height - 300
+
+    let noBtnClicked = 0;
+
+    let name;
+    console.log(width, height)
+
+    noBtn.addEventListener("click", (e)=> {
+        let randomTop = Math.floor(Math.random() * height);
+        let randomleft = Math.floor(Math.random() * width);
+        noBtnClicked += 1;
+        noBtn.style.position = "absolute"
+        noBtn.style.top = `${randomTop}px`;
+        noBtn.style.left = `${randomleft}px`;
+    })
+
+    yesBtn.addEventListener("click", async(e)=> {
+        loveDiv.style.display = "flex"
+        btnDiv.style.display = 'none'
+        let data = await fetch('https://valentine-prank-default-rtdb.asia-southeast1.firebasedatabase.app/data.json',{
+                method:"post",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    "name" : name,
+                    "no button clicked" : noBtnClicked
+                    
+                })
+            })
+    })
+
+    const nameInput = () => {
+        name = nameBox.value;
+        body.style.background = "#F1A4D5"
+        nameDiv.style.display = "none"
+        loveName.innerText= `Sayan 🩷 ${name.charAt(0).toUpperCase() + name.slice(1)}`
+    }
+</script>
+</html>

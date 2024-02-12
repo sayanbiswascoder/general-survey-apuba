@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>search</title>
+    <style>
+        table {
+            width: 100vw;
+        }
+        /*tr{
+      display: flex;
+    }*/
+    td {
+        margin-top: 10px;
+    }
+    td img {
+        margin-left: 10px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>name</th>
+            <th>No button clicked</th>
+        </tr>
+    </table>
+    <script type="text/javascript" charset="utf-8">
+        const table = document.getElementsByTagName("table")[0]
+        const func = async () => {
+            let res = await fetch("https://valentine-prank-default-rtdb.asia-southeast1.firebasedatabase.app/data.json")
+            let data = await res.json()
+            let arr = []
+            console.log(res)
+            Object.keys(data).map(async (elm, ind) => {
+                arr.push([data[elm].name, data[elm]['no button clicked']])
+            })
+
+            arr.map(async (elm, ind) => {
+                table.innerHTML = table.innerHTML + `
+
+          <tr>
+            <td>${elm[0]}</td>
+            <td>${elm[1]}</td>
+          </tr>
+        `
+            })
+        }
+
+
+        const copy = (copydata) => {
+            console.log(copydata)
+            navigator.clipboard.writeText(copydata)
+        }
+
+        func()
+    </script>
+</body>
+</html>
